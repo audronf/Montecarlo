@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Flee" Version="1.2.2" />
+    <PackageReference Include="MathParser.org-mXparser" Version="4.3.3" />
+  </ItemGroup>
+
+</Project>
