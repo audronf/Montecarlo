@@ -77,7 +77,6 @@ namespace Montecarlo
             Console.Write("Cantidad de puntos: ");
             cantidadPuntos = Convert.ToInt32(Console.ReadLine());
             Function f = new Function("f(x) = " + function);
-            Expression e = new Expression("f(2)", f);
             List<PointF> puntos = new List<PointF>();
             menorY = MinimoValorF(function, a, b);
             mayorY = MaximoValorF(function, a, b);
@@ -98,7 +97,6 @@ namespace Montecarlo
                 Expression exp = new Expression("f(x)",f);
                 x.setArgumentValue(p.X);
                 exp.addArguments(x);
-                Console.WriteLine(p.Y);
                 double valor = exp.calculate();
                 if (p.Y >= valor)
                     cantidadPuntosAdentro++;
