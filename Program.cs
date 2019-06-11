@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Flee.PublicTypes;
@@ -68,6 +68,8 @@ namespace Montecarlo
             int cantidadPuntos;
             int cantidadPuntosAdentro = 0;
             int cantidadPuntosAfuera = 0;
+            double valorIntegral = 0;
+            double error = 0d;
             Console.Write("Función: ");
             string function = Console.ReadLine();
             Console.Write("Valor inferior: ");
@@ -80,17 +82,16 @@ namespace Montecarlo
             List<PointF> puntos = new List<PointF>();
             menorY = MinimoValorF(function, a, b);
             mayorY = MaximoValorF(function, a, b);
+            Expression expIntegral = new Expression("int(("+function+"), x,"+a+","+b+")");
+            valorIntegral = expIntegral.calculate();
             for (int i = 0; i <= cantidadPuntos; i++)
             {
                 PointF p = new PointF();
                 p.X = Convert.ToSingle(RandomNumberBetween((double) a, (double) b));
                 p.Y = Convert.ToSingle(RandomNumberBetween(menorY, mayorY));
                 puntos.Add(p);
-                Console.WriteLine("X: "+p.X+ " Y: " + p.Y);
+                Console.WriteLine("Generando punto aleatoriamente ==> X: "+p.X+ " Y: " + p.Y);
             }
-
-            // Ahora si Montecarlo
-
             foreach (PointF p in puntos)
             {
                 Argument x = new Argument("x");
@@ -98,12 +99,21 @@ namespace Montecarlo
                 x.setArgumentValue(p.X);
                 exp.addArguments(x);
                 double valor = exp.calculate();
-                if (p.Y >= valor)
+                if (p.Y <= valor)
                     cantidadPuntosAdentro++;
                 else 
                     cantidadPuntosAfuera++;
             }
-            Console.WriteLine("El valor aproximado de la integral es de: "+ (double)cantidadPuntosAdentro/(double)cantidadPuntosAfuera);
+            double resultado;
+            resultado=((double)cantidadPuntosAdentro/(double)cantidadPuntos)*((double)(b-(double)a)*((double)mayorY-(double)menorY));
+            error = (Math.Abs(resultado - valorIntegral)/valorIntegral)*100;
+            Console.WriteLine("Se generaron "+cantidadPuntosAdentro+" en el interior de la función, de un total de "+cantidadPuntos+ " puntos.");
+            Console.WriteLine("El valor aproximado de la integral es de: "+ resultado);
+            Console.WriteLine("El valor calculado de la integral es: "+ valorIntegral);
+            if (error != 0)
+                Console.WriteLine("Por lo tanto, el error porcentual en este cálculo es de: "+error+"%.");
+            else  
+                Console.WriteLine("Por lo tanto, no hubo error en este cálculo.");
         }
     }
 }
